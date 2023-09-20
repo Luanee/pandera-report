@@ -7,9 +7,11 @@ readme = "README.md"
 packages = [{include = "pandera_report"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.11, <3.13"
 pandas = "^2.1.0"
 pandera = "0.16.1"
+pre-commit = "^3.4.0"
+numpy = "^1.26.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9.1"
@@ -138,7 +140,7 @@ disable = """
     arguments-differ,
     duplicate-code,
     function-redefined,
-    import-outside-toplevel
+    import-outside-toplevel,
     inconsistent-return-statements,
     invalid-name,
     line-too-long,
@@ -151,5 +153,6 @@ disable = """
     ungrouped-imports,
     unnecessary-dunder-call,
     use-dict-literal,
+    missing-module-docstring
 """
 extension-pkg-whitelist = "pydantic"
