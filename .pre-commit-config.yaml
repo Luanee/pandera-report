@@ -48,7 +48,7 @@ repos:
       name: update-requirements-txt
       description: 'Generate requirements.txt based on poetry.lock'
       entry: poetry
-      args: [export, --without-hashes, --without, dev, --format, requirements.txt, --output, requirements.txt]
+      args: [export, --without-hashes, --without, dev, --format, requirements.txt, --output, requirements/requirements.txt]
       language: system
       pass_filenames: false
   - repo: local
@@ -57,7 +57,7 @@ repos:
       name: update-requirements-txt
       description: 'Generate requirements.txt based on poetry.lock'
       entry: poetry
-      args: [export, --without-hashes, --with, dev, --format, requirements.txt, --output, requirements-dev.txt]
+      args: [export, --without-hashes, --with, dev, --format, requirements.txt, --output, requirements/requirements-dev.txt]
       language: system
       pass_filenames: false
 ci:

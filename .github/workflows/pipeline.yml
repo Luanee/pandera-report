@@ -59,8 +59,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-        pydantic-version: ["pydantic-v1", "pydantic-v2"]
+        python-version: [ 3.8, 3.9, "3.11" ]
+        os:  [ macos-latest, ubuntu-latest, windows-latest ]
       fail-fast: false
     steps:
       - name: Dump GitHub context
@@ -79,19 +79,13 @@ jobs:
         id: cache
         with:
           path: ${{ env.pythonLocation }}
-          key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ matrix.pydantic-version }}-${{ hashFiles('pyproject.toml', 'requirements-dev.txt') }}-test-v05
+          key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml', 'requirements-dev.txt') }}-test-v05
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install -r requirements-dev.txt
-      - name: Install Pydantic v1
-        if: matrix.pydantic-version == 'pydantic-v1'
-        run: pip install "pydantic>=1.10.0,<2.0.0"
-      - name: Install Pydantic v2
-        if: matrix.pydantic-version == 'pydantic-v2'
-        run: pip install "pydantic>=2.0.2,<3.0.0"
       - run: mkdir coverage
       - name: Test
-        run: pytest tests
+        run: python -m pytest tests
       - name: Store coverage files
         uses: actions/upload-artifact@v3
         with:
