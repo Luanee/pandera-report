@@ -3,6 +3,7 @@ from typing import (
     cast,
     Optional,
     Type,
+    Union,
 )
 
 import pandas as pd
@@ -60,7 +61,7 @@ custom_columns: QualityColumnsOptions = {"issues": "what's that?", "status": "do
 )
 def test_validator_validate(
     df_fixture: str,
-    schema: Type[pa.DataFrameModel] | pa.DataFrameSchema,
+    schema: Union[Type[pa.DataFrameModel], pa.DataFrameSchema],
     quality_report: bool,
     lazy: bool,
     columns: Optional[QualityColumnsOptions],

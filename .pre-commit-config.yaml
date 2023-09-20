@@ -1,7 +1,5 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
-default_language_version:
-  python: python3.11
 repos:
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -30,18 +28,30 @@ repos:
     rev: 23.3.0
     hooks:
       - id: black
-  - repo: local
+  - repo: https://github.com/pycqa/pylint
+    rev: v2.17.3
     hooks:
       - id: pylint
-        name: pylint
-        entry: poetry run pylint
-        language: system
-        types: [python]
-        args: [
-          "-rn", # Only display messages
-          "-sn", # Don't display the score
-          "--rcfile=pyproject.toml"
-        ]
+        args: ["--disable=import-error", "--rcfile=pyproject.toml"]
+
+  - repo: local
+    hooks:
+    - id: update-requirements-txt
+      name: update-requirements-txt
+      description: 'Generate requirements.txt based on poetry.lock'
+      entry: poetry
+      args: [export, --without-hashes, --without, dev, --format, requirements.txt, --output, requirements/requirements.txt]
+      language: system
+      pass_filenames: false
+  - repo: local
+    hooks:
+    - id: update-requirements-txt
+      name: update-requirements-txt
+      description: 'Generate requirements.txt based on poetry.lock'
+      entry: poetry
+      args: [export, --without-hashes, --with, dev, --format, requirements.txt, --output, requirements/requirements-dev.txt]
+      language: system
+      pass_filenames: false
 ci:
   autofix_commit_msg: 🎨 [pre-commit.ci] Auto format from pre-commit.com hooks
-  autoupdate_commit_msg: ⬆️ [pre-commit.ci] pre-commit autoupdate
+  autoupdate_commit_msg: ⬆️ [pre-commit.ci] Auto update from pre-commit hooks
