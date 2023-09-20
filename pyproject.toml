@@ -99,6 +99,8 @@ addopts = '''
     -p no:warnings
     --strict-markers
     --tb=short
+    --cov-report=xml
+    --cov-report term-missing
     --cov=pandera_report
     --cov=tests
     --cov-branch
@@ -122,11 +124,14 @@ fail_under=80
 
 [tool.coverage.run]
 branch = true
-source = ["pandera_report"]
+source = ["pandera_report", "tests"]
 omit = [
     "__init__.py",  # Exclude test files from coverage analysis
     "tests/*",  # Exclude test files from coverage analysis
 ]
+
+[tool.coverage.html]
+directory = "coverage"
 
 
 [tool.pylint.MASTER]
