@@ -2,20 +2,6 @@ import pandas as pd
 import pandera as pa
 import pytest
 
-test_schema = pa.DataFrameSchema(
-    {
-        "column1": pa.Column(int, checks=pa.Check.le(10)),
-        "column2": pa.Column(float, checks=pa.Check.lt(-1.2)),
-        "column3": pa.Column(
-            str,
-            checks=[
-                pa.Check.str_startswith("value_"),
-                pa.Check(lambda s: s.str.split("_", expand=True).shape[1] == 2),
-            ],
-        ),
-    }
-)
-
 
 @pytest.fixture(scope="module")
 def df_empty() -> pd.DataFrame:

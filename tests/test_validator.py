@@ -1,6 +1,6 @@
 from contextlib import nullcontext as do_not_raise
 from typing import (
-    Any,
+    cast,
     Optional,
     Type,
 )
@@ -40,45 +40,35 @@ class SchemaModel(pa.DataFrameModel):
         return value.str.split("_", expand=True).shape[1] == 2
 
 
-data = {
-    "column1": [9, 4, 0, 10, 1],
-    "column2": [-1.3, -4, -8, -10, -3],
-    "column3": ["value_1", "value_2", "value_3", "value_2", "value_1"],
-}
-
-invalid_data = {
-    "column1": [9, 4, 0, 10, 1],
-    "column3": ["value_1", "value_2", "value_3", "value_2", "value1"],
-}
-
 custom_columns: QualityColumnsOptions = {"issues": "what's that?", "status": "does it work?"}
 
 
 @pytest.mark.parametrize(
-    "data,schema,quality_report,lazy,columns,parser,exception",
+    "df_fixture,schema,quality_report,lazy,columns,parser,exception",
     [
-        (data, schema, False, False, None, None, do_not_raise()),
-        (data, schema, False, True, None, None, do_not_raise()),
-        (data, schema, True, False, None, None, do_not_raise()),
-        (data, schema, True, True, None, None, do_not_raise()),
-        (data, schema, True, True, custom_columns, None, do_not_raise()),
-        (data, SchemaModel, True, True, custom_columns, None, do_not_raise()),
-        (invalid_data, schema, False, False, None, None, pytest.raises(SchemaError)),
-        (invalid_data, schema, False, True, None, None, pytest.raises(SchemaErrors)),
-        (invalid_data, schema, True, False, None, None, do_not_raise()),
-        (invalid_data, schema, True, True, None, None, do_not_raise()),
+        ("df_valid", schema, False, False, None, None, do_not_raise()),
+        ("df_valid", schema, False, True, None, None, do_not_raise()),
+        ("df_valid", schema, True, False, None, None, do_not_raise()),
+        ("df_valid", schema, True, True, None, None, do_not_raise()),
+        ("df_valid", schema, True, True, custom_columns, None, do_not_raise()),
+        ("df_valid", SchemaModel, True, True, custom_columns, None, do_not_raise()),
+        ("df_invalid_values", schema, False, False, None, None, pytest.raises(SchemaError)),
+        ("df_invalid_values", schema, False, True, None, None, pytest.raises(SchemaErrors)),
+        ("df_invalid_values", schema, True, False, None, None, do_not_raise()),
+        ("df_invalid_values", schema, True, True, None, None, do_not_raise()),
     ],
 )
 def test_validator_validate(
-    data: dict,
+    df_fixture: str,
     schema: Type[pa.DataFrameModel] | pa.DataFrameSchema,
     quality_report: bool,
     lazy: bool,
     columns: Optional[QualityColumnsOptions],
     parser: Optional[FailureCaseParser],
     exception,
+    request,
 ):
-    df = pd.DataFrame(data)
+    df = cast(pd.DataFrame, request.getfixturevalue(df_fixture))
     org_columns = df.columns.to_list()
     validator = DataFrameValidator(quality_report, lazy, columns, parser)
 
@@ -86,4 +76,6 @@ def test_validator_validate(
         df = validator.validate(schema, df)
 
         if quality_report:
-            assert df.columns.to_list() == org_columns + list(validator.columns.values())
+            org_columns += list(validator.columns.values())
+
+        assert df.columns.to_list() == org_columns
