@@ -38,4 +38,4 @@ repos:
       - id: isort
 ci:
   autofix_commit_msg: 🎨 [pre-commit.ci] Auto format from pre-commit.com hooks
-  autoupdate_commit_msg: ⬆ [pre-commit.ci] pre-commit autoupdate
+  autoupdate_commit_msg: ⬆️ [pre-commit.ci] pre-commit autoupdate
