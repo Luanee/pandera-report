@@ -1,10 +1,28 @@
 [tool.poetry]
 name = "pandera-report"
 version = "0.1.0"
-description = ""
+description = "Pandera Report for row-based reporting by using the power of pandera."
 authors = ["Pit Nahrstedt <pit.nahrstedt@outlook.de>"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Operating System :: OS Independent",
+    "License :: MIT License",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+]
 readme = "README.md"
 packages = [{include = "pandera_report"}]
+
+
+[tool.poetry.urls]
+Homepage = "https://github.com/Luanee/pandera-report"
+
 
 [tool.poetry.dependencies]
 python = "^3.11, <3.13"
@@ -29,23 +47,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 color=true
-exclude = '''
-    /(
-        \.git
-        | \._build
-        | \.back.out
-        | \.build
-        | \.coverage
-        | \.dist
-        | \.hg
-        | \.mypy_cache
-        | \.tox
-        | \.venv
-        | ./src/coverage
-        | blib2to3
-        | tests/data
-    )/
-'''
 line-length = 120
 
 
