@@ -58,7 +58,7 @@ jobs:
   testing:
     runs-on: ubuntu-latest
     env:
-      PYTEST_FLAGS: --cov=pandera_report --cov=tests --cov-report=term-missing --cov-report=xml --cov-append --cov-branch
+      PYTEST_FLAGS: --cov=pandera_report --cov=tests --cov-report=term-missing --cov-report=xml:coverage/coverage.xml --cov-append --cov-branch
     strategy:
       matrix:
         python-version: [ "3.9","3.10", "3.11" ]
@@ -92,3 +92,6 @@ jobs:
         run: python -m pytest tests ${{ env.PYTEST_FLAGS }}
       - name: Store coverage files
         uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage/coverage.xml

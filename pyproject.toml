@@ -99,7 +99,7 @@ addopts = '''
     -p no:warnings
     --strict-markers
     --tb=short
-    --cov-report=xml
+    --cov-report=xml:coverage/coverage.xml
     --cov-report term-missing
     --cov=pandera_report
     --cov=tests
