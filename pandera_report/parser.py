@@ -10,9 +10,10 @@ from .options import QUALITY_STATUS_OPTIONS, QualityStatusOptions
 class FailureCaseParser(Protocol):
     """
     An abstract base class for pandera's failure cases dataframe.
-    
+
     This class defines the basic structure and properties of failure case parsers.
     """
+
     # pylint: disable=missing-function-docstring
     @abc.abstractmethod
     def parse_failure_cases(self, df: pd.DataFrame, number_of_rows: int) -> tuple[pd.Series, pd.Series]:
@@ -32,6 +33,7 @@ class FailureCaseParser(Protocol):
 
     # pylint: enable=missing-function-docstring
 
+
 class DefaultFailureCaseParser(FailureCaseParser):
     """
     A default implementation of the FailureCaseParser abstract class.
@@ -46,8 +48,8 @@ class DefaultFailureCaseParser(FailureCaseParser):
         _invalid (str): The invalid quality status.
         _none (str): The none quality status.
     """
-    def __init__(self, status: Optional[QualityStatusOptions] = None):
 
+    def __init__(self, status: Optional[QualityStatusOptions] = None):
         status = status or QUALITY_STATUS_OPTIONS
 
         self._valid = status["valid"]
