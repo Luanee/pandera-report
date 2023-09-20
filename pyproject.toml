@@ -1,0 +1,155 @@
+[tool.poetry]
+name = "pandera-report"
+version = "0.1.0"
+description = ""
+authors = ["Pit Nahrstedt <pit.nahrstedt@outlook.de>"]
+readme = "README.md"
+packages = [{include = "pandera_report"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "^2.1.0"
+pandera = "0.16.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.9.1"
+isort = "^5.12.0"
+pylint = "^2.17.5"
+pytest = "^7.4.2"
+pytest-cov = "^4.1.0"
+autoflake = "^2.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+
+[tool.black]
+color=true
+exclude = '''
+    /(
+        \.git
+        | \._build
+        | \.back.out
+        | \.build
+        | \.coverage
+        | \.dist
+        | \.hg
+        | \.mypy_cache
+        | \.tox
+        | \.venv
+        | ./src/coverage
+        | blib2to3
+        | tests/data
+    )/
+'''
+line-length = 120
+
+
+[tool.isort]
+profile = "black"
+color_output = true
+combine_as_imports = true
+ensure_newline_before_comments = true
+force_alphabetical_sort_within_sections = true
+force_grid_wrap = 3
+include_trailing_comma = true
+line_length = 120
+lines_between_sections = 1
+multi_line_output = 3
+use_parentheses = true
+skip_gitignore = true
+skip = [
+    ".coverage",
+    "coverage/*",
+    "cov.html",
+    ".dockerignore",
+    ".env",
+    ".github",
+    ".gitignore",
+    ".html",
+    ".md",
+    ".python-version",
+    ".rst",
+    ".xml"
+]
+src_paths = [
+    "pandera_report/",
+    "tests/",
+]
+
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test", "Acceptance"]
+python_functions = ["test_*"]
+testpaths = "tests"
+filterwarnings = "error"
+omit = [
+    "*/__init__.py",
+]
+addopts = '''
+    --verbose
+    -p no:warnings
+    --strict-markers
+    --tb=short
+    --cov=pandera_report
+    --cov=tests
+    --cov-branch
+    --no-cov-on-fail
+'''
+
+
+[tool.coverage.report]
+skip_empty = true
+show_missing = true
+ignore_errors = true
+exclude_lines = [
+    "@abstractmethod",
+    "@abc.abstractmethod",
+    "if self.debug:",
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:"
+]
+fail_under=80
+
+[tool.coverage.run]
+branch = true
+source = ["pandera_report"]
+omit = [
+    "__init__.py",  # Exclude test files from coverage analysis
+    "tests/*",  # Exclude test files from coverage analysis
+]
+
+
+[tool.pylint.BASIC]
+# Good variable names which should always be accepted, separated by a comma.
+good-names = """
+    i,j,k,
+    id,_
+"""
+
+[tool.pylint.MESSAGES_CONTROL]
+disable = """
+    arguments-differ,
+    duplicate-code,
+    function-redefined,
+    import-outside-toplevel
+    inconsistent-return-statements,
+    invalid-name,
+    line-too-long,
+    no-else-return,
+    protected-access,
+    too-few-public-methods,
+    too-many-ancestors,
+    too-many-instance-attributes,
+    too-many-lines,
+    ungrouped-imports,
+    unnecessary-dunder-call,
+    use-dict-literal,
+"""
+extension-pkg-whitelist = "pydantic"
