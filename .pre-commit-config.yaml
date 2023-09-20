@@ -42,6 +42,24 @@ repos:
           "-sn", # Don't display the score
           "--rcfile=pyproject.toml"
         ]
+  - repo: local
+    hooks:
+    - id: update-requirements-txt
+      name: update-requirements-txt
+      description: 'Generate requirements.txt based on poetry.lock'
+      entry: poetry
+      args: [export, --without-hashes, --without, dev, --format, requirements.txt, --output, requirements.txt]
+      language: system
+      pass_filenames: false
+  - repo: local
+    hooks:
+    - id: update-requirements-txt
+      name: update-requirements-txt
+      description: 'Generate requirements.txt based on poetry.lock'
+      entry: poetry
+      args: [export, --without-hashes, --with, dev, --format, requirements.txt, --output, requirements-dev.txt]
+      language: system
+      pass_filenames: false
 ci:
   autofix_commit_msg: 🎨 [pre-commit.ci] Auto format from pre-commit.com hooks
   autoupdate_commit_msg: ⬆️ [pre-commit.ci] pre-commit autoupdate
