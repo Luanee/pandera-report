@@ -30,18 +30,12 @@ repos:
     rev: 23.3.0
     hooks:
       - id: black
-  - repo: local
+  - repo: https://github.com/pycqa/pylint
+    rev: v2.17.3
     hooks:
       - id: pylint
-        name: pylint
-        entry: poetry run pylint
-        language: system
-        types: [python]
-        args: [
-          "-rn", # Only display messages
-          "-sn", # Don't display the score
-          "--rcfile=pyproject.toml"
-        ]
+        args: ["--disable=import-error", "--rcfile=pyproject.toml"]
+
   - repo: local
     hooks:
     - id: update-requirements-txt
