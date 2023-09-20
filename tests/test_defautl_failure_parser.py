@@ -1,5 +1,3 @@
-import pytest
-
 from pandera_report.parser import DefaultFailureCaseParser
 
 

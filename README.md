@@ -25,7 +25,7 @@
 > validation on dataframe-like objects to make data processing pipelines more
 > readable and robust
 
-If you have to report potential quality issues resulting from the dataframe validation via `pandera`, than `pandera-report` is your friend. Based on the information of possible validation issues that pandera provides, your original dataframe will be extended with these issues on a row-level base. 
+If you have to report potential quality issues resulting from the dataframe validation via `pandera`, than `pandera-report` is your friend. Based on the information of possible validation issues that pandera provides, your original dataframe will be extended with these issues on a row-level base.
 
 With
 `pandera-report`, you can:

@@ -129,6 +129,9 @@ omit = [
 ]
 
 
+[tool.pylint.MASTER]
+ignore-patterns = 'tests/,test_(.)*\.py,conftest.py'
+
 [tool.pylint.BASIC]
 # Good variable names which should always be accepted, separated by a comma.
 good-names = """
