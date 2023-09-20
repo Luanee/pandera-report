@@ -1,14 +1,31 @@
-<h1 align="center">
+<h1 align="center" style="color: #a3cef1">
   Pandera Extension for row-based reporting
 </h1>
+<p align="center">
+    <!-- Line 1 -->
+    <a href="https://python.org">
+        <img src="https://img.shields.io/badge/python-v3.8+-white.svg?logo=python&logoColor=a3cef1&label=python&color=a3cef1" alt="Python version">
+    </a>
+    <a href="https://github.com/pre-commit/pre-commit">
+        <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=a3cef1&color=a3cef1" alt="Pre-commit">
+    </a>
+    <a href="https://github.com/psf/black">
+        <img src="https://img.shields.io/badge/code%20style-black-000000.svg?color=a3cef1" alt="Black">
+    </a>
+    <a href="https://pycqa.github.io/isort/">
+        <img src="https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&color=a3cef1" alt="isort">
+    </a>
+</p>
 
 ---
 
-`pandera` provides a flexible and expressive API for performing data
-validation on dataframe-like objects to make data processing pipelines more
-readable and robust (source: [pandera](https://github.com/unionai-oss/pandera) )
+## 🚀 Description
 
-If you have to provide potential quality issues resulting from the dataframe validation via `pandera`, than `pandera-report` is your friend. Based on the validation issues that pandera provides, your original dataframe will be extended with these issues on a row-level base.
+> [pandera](https://github.com/unionai-oss/pandera) provides a flexible and expressive API for performing data
+> validation on dataframe-like objects to make data processing pipelines more
+> readable and robust
+
+If you have to report potential quality issues resulting from the dataframe validation via `pandera`, than `pandera-report` is your friend. Based on the information of possible validation issues that pandera provides, your original dataframe will be extended with these issues on a row-level base. 
 
 With
 `pandera-report`, you can:
@@ -16,7 +33,7 @@ With
 - Seamlessly integrates with the `pandera` library to provide enhanced data validation capabilities without interfering with the pandera functionality.
 - Provides a convenient way to enrich your data with information about why specific rows failed validation.
 
-## Install
+## ⚡ Setup
 
 Using pip:
 
@@ -24,11 +41,17 @@ Using pip:
 pip install pandera-report
 ```
 
+Using poetry:
+
+```bash
+poetry add pandera-report
+```
+
 ## Quick start
 
 The following example is taken from the `pandera` documentation and shows the definition of a DataFrameSchema which will end in a valid result for the provided dataframe.
 
-```python
+```Python
 import pandas as pd
 import pandera as pa
 
@@ -63,9 +86,9 @@ print(validated_df)
 #  4        9    -20.4  value_1
 ```
 
-To make usage of the pandera-report functionality for the same schema and dataframe, you can do this:
+To make usage of the `pandera-report` functionality for the same schema and dataframe, you can do this:
 
-```python
+```Python
 
 validator = DataFrameValidator() # default is quality_report=True, lazy=True
 print(validator.validate(schema, df))
@@ -82,7 +105,7 @@ You see?! Same result but extended by the fact that the validation of the datafr
 
 But what if the dataframe contains data quality issues? `pandera` will throw SchemaErrors or SchemaError (depends on the lazyness). Let's see what `pandera-report` does, if we change the dataframe against the schema definition:
 
-```python
+```Python
 
 # data to validate
 df = pd.DataFrame({
@@ -101,3 +124,5 @@ print(validator.validate(schema, df))
 #  3       10    -10.1  value_2                                        None          Valid
 #  4        9    -20.4   value1  Column <column3>: str_startswith('value_')        Invalid
 ```
+
+Why is this useful? Quite simply, it becomes particularly interesting when you are not the one who has to prepare a valid file so that it can be processed into a valid DataFrame in the end.

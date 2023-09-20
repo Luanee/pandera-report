@@ -2,11 +2,26 @@ from typing import TypedDict
 
 
 class QualityColumnsOptions(TypedDict):
+    """
+    TypedDict representing options for quality columns.
+
+    Attributes:
+        issues (str): The name of the column containing quality issues.
+        status (str): The name of the column containing quality status.
+    """
     issues: str
     status: str
 
 
 class QualityStatusOptions(TypedDict):
+    """
+    TypedDict representing options for quality status.
+
+    Attributes:
+        valid (str): The valid quality status.
+        invalid (str): The invalid quality status.
+        none (str): The none quality status.
+    """
     valid: str
     invalid: str
     none: str
