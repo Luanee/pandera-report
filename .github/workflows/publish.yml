@@ -22,6 +22,7 @@ jobs:
 
   publish:
     needs: ['build']
+    environment: 'publish'
     name: Publish release to PyPi
 
     runs-on: ubuntu-latest
