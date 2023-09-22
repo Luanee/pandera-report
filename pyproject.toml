@@ -3,10 +3,10 @@ name = "pandera-report"
 version = "0.1.0"
 description = "Pandera Report for row-based reporting by using the power of pandera."
 authors = ["Pit Nahrstedt <pit.nahrstedt@outlook.de>"]
+license = "MIT"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Operating System :: OS Independent",
-    "License :: MIT License",
     "Intended Audience :: Science/Research",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
