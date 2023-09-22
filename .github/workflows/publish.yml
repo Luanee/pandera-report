@@ -3,7 +3,7 @@ name: Publish
 on:
   release:
     types:
-      - created
+      - published
 
 jobs:
   build:
@@ -22,7 +22,6 @@ jobs:
 
   publish:
     needs: ['build']
-    environment: 'publish'
     name: Publish release to PyPi
 
     runs-on: ubuntu-latest
