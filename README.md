@@ -2,19 +2,30 @@
   Pandera Extension for row-based reporting
 </h1>
 <p align="center">
-    <!-- Line 1 -->
-    <a href="https://python.org">
-        <img src="https://img.shields.io/badge/python-v3.8+-white.svg?logo=python&logoColor=a3cef1&label=python&color=a3cef1" alt="Python version">
-    </a>
-    <a href="https://github.com/pre-commit/pre-commit">
-        <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=a3cef1&color=a3cef1" alt="Pre-commit">
-    </a>
-    <a href="https://github.com/psf/black">
-        <img src="https://img.shields.io/badge/code%20style-black-000000.svg?color=a3cef1" alt="Black">
-    </a>
-    <a href="https://pycqa.github.io/isort/">
-        <img src="https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&color=a3cef1" alt="isort">
-    </a>
+    <div align="center">
+        <!-- Line 1 -->
+        <a href="https://python.org">
+            <img src="https://img.shields.io/badge/python-v3.9+-white.svg?logo=python&logoColor=a3cef1&label=python&color=a3cef1" alt="Python version">
+        </a>
+        <a href="https://www.union.ai/pandera">
+            <img src="https://img.shields.io/badge/Pandera-v0.16.1+%20-white.svg?logo=pandera&style=flat&color=a3cef1&label=pandera" alt="Pandera Version">
+        </a>
+        <a href="https://pypi.org/project/pandera-report" target="_blank">
+            <img src="https://img.shields.io/pypi/v/pandera-report?style=flat&color=a3cef1&label=pypi" alt="Package version">
+        </a>
+        <a href="https://github.com/pre-commit/pre-commit">
+            <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=a3cef1&color=a3cef1" alt="Pre-commit">
+        </a>
+        <a href="https://github.com/psf/black">
+            <img src="https://img.shields.io/badge/code%20style-black-000000.svg?color=a3cef1" alt="Black">
+        </a>
+        <a href="https://pycqa.github.io/isort/">
+            <img src="https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&color=a3cef1" alt="isort">
+        </a>
+        <a href="https://github.com/luanee/pandera-report/actions/workflows/pipeline.yml?event=push&query=branch%3Amain" target="_blank">
+            <img src="https://img.shields.io/github/actions/workflow/status/luanee/pandera-report/pipeline.yml?branch=main&label=tests&style=flat&color=a3cef1" alt="Test">
+        </a>
+    </div>
 </p>
 
 ---
