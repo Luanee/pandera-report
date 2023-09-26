@@ -8,7 +8,7 @@
             <img src="https://img.shields.io/badge/python-v3.9+-white.svg?logo=python&logoColor=a3cef1&label=python&color=a3cef1" alt="Python version">
         </a>
         <a href="https://www.union.ai/pandera">
-            <img src="https://img.shields.io/badge/Pandera-v0.16.1+%20-white.svg?logo=pandera&style=flat&color=a3cef1&label=pandera" alt="Pandera Version">
+            <img src="https://img.shields.io/badge/Pandera-v0.17.0+%20-white.svg?logo=pandera&style=flat&color=a3cef1&label=pandera" alt="Pandera Version">
         </a>
         <a href="https://pypi.org/project/pandera-report" target="_blank">
             <img src="https://img.shields.io/pypi/v/pandera-report?style=flat&color=a3cef1&label=pypi" alt="Package version">
