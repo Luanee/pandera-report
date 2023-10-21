@@ -26,9 +26,9 @@ Homepage = "https://github.com/Luanee/pandera-report"
 [tool.poetry.dependencies]
 python = "^3.9, <3.13"
 pandas = "^2.1.1"
-pandera = "^0.17.1"
+pandera = "^0.17.2"
 pre-commit = "^3.4.0"
-numpy = "^1.26.0"
+numpy = "^1.26.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9.1"
