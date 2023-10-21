@@ -61,6 +61,7 @@ custom_columns: QualityColumnsOptions = {"issues": "what's that?", "status": "do
         ("df_invalid_values", schema, False, True, None, None, pytest.raises(SchemaErrors)),
         ("df_invalid_values", schema, True, False, None, None, do_not_raise()),
         ("df_invalid_values", schema, True, True, None, None, do_not_raise()),
+        ("df_empty", schema, True, True, None, None, do_not_raise()),
         ("df_empty", SchemaModel, True, True, None, None, do_not_raise()),
         ("df_empty", SchemaModel, False, True, None, None, pytest.raises(SchemaErrors)),
     ],
