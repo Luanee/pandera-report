@@ -1,4 +1,3 @@
-import warnings
 from typing import (
     Callable,
     cast,
@@ -23,13 +22,9 @@ class DataFrameValidator:
     Parameters:
         quality_report (bool, optional): Whether to generate a quality report in the DataFrame. Defaults to True.
         lazy (bool, optional): Whether to use lazy validation. Defaults to True.
-        columns (Optional[QualityColumnsOptions], optional): Optional. The names of quality columns.
+        columns (Optional[QualityColumnsOptions], optional): The names of quality columns.
             If not provided, default column names are used.
-        parser (Optional[FailureCaseParser], optional): Optional. The failure case parser to use.
-            If not provided, the default parser is used.
-
-    Attributes:
-        columns (TypedDict): The names of quality columns.
+        parser (Optional[FailureCaseParser], optional): The failure case parser to use. If not provided, the default parser is used.
     """
 
     def __init__(
@@ -85,12 +80,8 @@ class DataFrameValidator:
                 raise error
             return df
 
-        if not self.lazy:
-            warnings.warn(
-                "The DataFrame may have significantly more errors, but based on the lazy setting, only the first error will be marked"
-            )
-
-        return self.assign_quality_report(df, df_failure, error if isinstance(error, SchemaError) else None)
+        error = error if isinstance(error, SchemaError) else None
+        return self.assign_quality_report(df, df_failure, error)
 
     def assign_quality_report(
         self, df: pd.DataFrame, df_failure: pd.DataFrame, error: Optional[SchemaError]
@@ -106,7 +97,10 @@ class DataFrameValidator:
         Returns:
             pd.DataFrame: The DataFrame with quality report columns.
         """
-        number_of_rows = df.shape[0]
+        number_of_rows = df.shape[0] or 1
+
+        if df.empty:
+            df_failure = df_failure[df_failure["schema_context"].str.lower() != "column"]
 
         if not df_failure.empty:
             df_failure = self.validate_failure_case_dataframe(df_failure, error)
@@ -180,7 +174,7 @@ class DataFrameValidator:
         Returns:
             pd.DataFrame: The filtered DataFrame.
         """
-        mask = pd_func(df.reference)
+        mask = pd_func(df["reference"])
         df = df[mask]
 
         return df.fillna({"column": df[self._col_issues]})

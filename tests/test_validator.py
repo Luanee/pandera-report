@@ -36,8 +36,12 @@ class SchemaModel(pa.DataFrameModel):
     column2: Series[float] = pa.Field(lt=-1.2)
     column3: Series[str] = pa.Field(str_startswith="value_")
 
+    @pa.dataframe_check
+    def contains_data(cls, df: pd.DataFrame) -> bool:
+        return df.size > 0
+
     @pa.check("column3", name="column3")
-    def custom_check(cls, value: Series[str]):
+    def custom_check(cls, value: Series[str]) -> bool:
         return value.str.split("_", expand=True).shape[1] == 2
 
 
@@ -57,6 +61,8 @@ custom_columns: QualityColumnsOptions = {"issues": "what's that?", "status": "do
         ("df_invalid_values", schema, False, True, None, None, pytest.raises(SchemaErrors)),
         ("df_invalid_values", schema, True, False, None, None, do_not_raise()),
         ("df_invalid_values", schema, True, True, None, None, do_not_raise()),
+        ("df_empty", SchemaModel, True, True, None, None, do_not_raise()),
+        ("df_empty", SchemaModel, False, True, None, None, pytest.raises(SchemaErrors)),
     ],
 )
 def test_validator_validate(

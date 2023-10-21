@@ -4,7 +4,13 @@ import pytest
 
 @pytest.fixture(scope="module")
 def df_empty() -> pd.DataFrame:
-    return pd.DataFrame()
+    return pd.DataFrame(
+        {
+            "column1": [],
+            "column2": [],
+            "column3": [],
+        }
+    )
 
 
 @pytest.fixture(scope="module")
