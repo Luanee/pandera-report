@@ -78,7 +78,7 @@ class DataFrameValidator:
         schema: Union[Type[pa.DataFrameModel], pa.DataFrameSchema],
         df: pd.DataFrame,
         validity_flag: bool = False,
-    ) -> tuple[bool, pd.DataFrame] | pd.DataFrame:
+    ) -> Union[tuple[bool, pd.DataFrame], pd.DataFrame]:
         """
         Validate a DataFrame using a Pandera schema and generate a quality report.
 
