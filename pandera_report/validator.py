@@ -1,7 +1,6 @@
 from typing import (
     Callable,
     cast,
-    Literal,
     Optional,
     overload,
     Type,
