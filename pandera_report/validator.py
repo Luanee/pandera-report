@@ -2,6 +2,7 @@ from typing import (
     Callable,
     cast,
     Optional,
+    overload,
     Type,
     Union,
 )
@@ -41,6 +42,8 @@ class DataFrameValidator:
         self._col_status = self._columns["status"]
         self._parser = parser or DefaultFailureCaseParser()
 
+        self._is_valid = None
+
     @property
     def columns(self) -> QualityColumnsOptions:
         """
@@ -51,11 +54,30 @@ class DataFrameValidator:
         """
         return self._columns
 
+    @overload
     def validate(
         self,
         schema: Union[Type[pa.DataFrameModel], pa.DataFrameSchema],
         df: pd.DataFrame,
+        validity_flag: bool = False,
     ) -> pd.DataFrame:
+        ...
+
+    @overload
+    def validate(
+        self,
+        schema: Union[Type[pa.DataFrameModel], pa.DataFrameSchema],
+        df: pd.DataFrame,
+        validity_flag: bool = True,
+    ) -> tuple[bool, pd.DataFrame]:
+        ...
+
+    def validate(
+        self,
+        schema: Union[Type[pa.DataFrameModel], pa.DataFrameSchema],
+        df: pd.DataFrame,
+        validity_flag: bool = False,
+    ) -> Union[tuple[bool, pd.DataFrame], pd.DataFrame]:
         """
         Validate a DataFrame using a Pandera schema and generate a quality report.
 
@@ -70,10 +92,12 @@ class DataFrameValidator:
             schema = schema.to_schema()
 
         error: Optional[SchemaError | SchemaErrors] = None
+        is_valid = False
 
         try:
             df = schema.validate(df, lazy=self.lazy)
             df_failure = pd.DataFrame()
+            is_valid = True
         except (SchemaErrors, SchemaError) as schema_error:
             df_failure = cast(pd.DataFrame, schema_error.failure_cases)
             error = schema_error
@@ -81,10 +105,16 @@ class DataFrameValidator:
         if not self.quality_report:
             if error:
                 raise error
+
+            if validity_flag:
+                return is_valid, df
             return df
 
         error = error if isinstance(error, SchemaError) else None
-        return self.assign_quality_report(df, df_failure, error)
+        df = self.assign_quality_report(df, df_failure, error)
+        if validity_flag:
+            return is_valid, df
+        return df
 
     def assign_quality_report(
         self, df: pd.DataFrame, df_failure: pd.DataFrame, error: Optional[SchemaError]
@@ -102,10 +132,9 @@ class DataFrameValidator:
         """
         number_of_rows = df.shape[0] or 1
 
-        if df.empty:
-            df_failure = df_failure[df_failure["schema_context"].str.lower() != "column"]
-
         if not df_failure.empty:
+            if df.empty:
+                df_failure = df_failure[df_failure["schema_context"].str.lower() != "column"]
             df_failure = self.validate_failure_case_dataframe(df_failure, error)
             df_failure = self.transform_failure_cases_dataframe(df_failure, number_of_rows)
 

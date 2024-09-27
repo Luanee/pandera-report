@@ -12,7 +12,7 @@ import pytest
 from pandera.errors import SchemaError, SchemaErrors
 from pandera.typing import Series
 
-from pandera_report.options import QualityColumnsOptions
+from pandera_report.options import QUALITY_COLUMNS_OPTIONS, QualityColumnsOptions
 from pandera_report.parser import FailureCaseParserProtocol
 from pandera_report.validator import DataFrameValidator
 
@@ -43,6 +43,12 @@ class SchemaModel(pa.DataFrameModel):
     @pa.check("column3", name="column3")
     def custom_check(cls, value: Series[str]) -> bool:
         return value.str.split("_", expand=True).shape[1] == 2
+
+
+class EmptySchemaModel(pa.DataFrameModel):
+    column1: Series[int] = pa.Field(nullable=True, coerce=True)
+    column2: Series[float] = pa.Field(nullable=True)
+    column3: Series[str] = pa.Field(nullable=True)
 
 
 custom_columns: QualityColumnsOptions = {
@@ -106,3 +112,37 @@ def test_validator_validate(
             org_columns += list(validator.columns.values())
 
         assert df.columns.to_list() == org_columns
+
+
+@pytest.mark.parametrize(
+    "df_fixture,schema,validity,expected",
+    [
+        ("df_valid", schema, True, tuple),
+        ("df_valid", schema, False, pd.DataFrame),
+    ],
+)
+def test_validator_validate_flag(
+    df_fixture: str,
+    schema: Union[Type[pa.DataFrameModel], pa.DataFrameSchema],
+    validity: bool,
+    expected: Type,
+    request,
+):
+    df = cast(pd.DataFrame, request.getfixturevalue(df_fixture))
+    validator = DataFrameValidator()
+
+    df_validated = validator.validate(schema, df, validity_flag=validity)
+    assert isinstance(df_validated, expected)
+
+
+@pytest.mark.parametrize(
+    "columns,expected",
+    [
+        (None, QUALITY_COLUMNS_OPTIONS),
+        (custom_columns, custom_columns),
+    ],
+)
+def test_validator_columns(columns: Optional[QualityColumnsOptions], expected: QualityColumnsOptions):
+    validator = DataFrameValidator(columns=columns)
+
+    assert validator.columns == expected
