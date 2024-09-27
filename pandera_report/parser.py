@@ -60,6 +60,10 @@ class DefaultFailureCaseParser(FailureCaseParser):
         _none (str): The none quality status.
     """
 
+    # pylint: disable=W0246
+    def __init__(self, status: Optional[QualityStatusOptions] = None):
+        super().__init__(status)
+
     def parse_failure_cases(self, df: pd.DataFrame, number_of_rows: int):
         """
         Parse failure cases from a DataFrame and create corresponding quality issues and status series.
