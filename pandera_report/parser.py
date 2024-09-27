@@ -14,6 +14,17 @@ class FailureCaseParser(Protocol):
     This class defines the basic structure and properties of failure case parsers.
     """
 
+    _valid: str
+    _invalid: str
+    _none: str
+
+    def __init__(self, status: Optional[QualityStatusOptions] = None):
+        status = status or QUALITY_STATUS_OPTIONS
+
+        self._valid = status["valid"]
+        self._invalid = status["invalid"]
+        self._none = status["none"]
+
     # pylint: disable=missing-function-docstring
     @abc.abstractmethod
     def parse_failure_cases(self, df: pd.DataFrame, number_of_rows: int) -> tuple[pd.Series, pd.Series]:
@@ -48,13 +59,6 @@ class DefaultFailureCaseParser(FailureCaseParser):
         _invalid (str): The invalid quality status.
         _none (str): The none quality status.
     """
-
-    def __init__(self, status: Optional[QualityStatusOptions] = None):
-        status = status or QUALITY_STATUS_OPTIONS
-
-        self._valid = status["valid"]
-        self._invalid = status["invalid"]
-        self._none = status["none"]
 
     def parse_failure_cases(self, df: pd.DataFrame, number_of_rows: int):
         """

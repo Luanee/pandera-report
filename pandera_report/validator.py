@@ -3,7 +3,6 @@ from typing import (
     cast,
     Optional,
     Type,
-    TypedDict,
     Union,
 )
 
@@ -43,7 +42,7 @@ class DataFrameValidator:
         self._parser = parser or DefaultFailureCaseParser()
 
     @property
-    def columns(self) -> TypedDict:
+    def columns(self) -> QualityColumnsOptions:
         """
         Get the names of quality columns.
 
@@ -52,7 +51,11 @@ class DataFrameValidator:
         """
         return self._columns
 
-    def validate(self, schema: Union[Type[pa.DataFrameModel], pa.DataFrameSchema], df: pd.DataFrame) -> pd.DataFrame:
+    def validate(
+        self,
+        schema: Union[Type[pa.DataFrameModel], pa.DataFrameSchema],
+        df: pd.DataFrame,
+    ) -> pd.DataFrame:
         """
         Validate a DataFrame using a Pandera schema and generate a quality report.
 
