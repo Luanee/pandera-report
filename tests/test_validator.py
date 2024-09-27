@@ -13,7 +13,7 @@ from pandera.errors import SchemaError, SchemaErrors
 from pandera.typing import Series
 
 from pandera_report.options import QualityColumnsOptions
-from pandera_report.parser import FailureCaseParser
+from pandera_report.parser import FailureCaseParserProtocol
 from pandera_report.validator import DataFrameValidator
 
 schema = pa.DataFrameSchema(
@@ -91,14 +91,15 @@ def test_validator_validate(
     quality_report: bool,
     lazy: bool,
     columns: Optional[QualityColumnsOptions],
-    parser: Optional[FailureCaseParser],
+    parser: Optional[FailureCaseParserProtocol],
     exception,
     request,
 ):
     df = cast(pd.DataFrame, request.getfixturevalue(df_fixture))
     org_columns = df.columns.to_list()
     validator = DataFrameValidator(quality_report, lazy, columns, parser)
-
+    print(validator._parser)
+    print(validator._parser.__dict__)
     with exception:
         df = validator.validate(schema, df)
 

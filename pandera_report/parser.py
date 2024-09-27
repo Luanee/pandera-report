@@ -7,23 +7,16 @@ import pandas as pd
 from .options import QUALITY_STATUS_OPTIONS, QualityStatusOptions
 
 
-class FailureCaseParser(Protocol):
+class FailureCaseParserProtocol(Protocol):
     """
     An abstract base class for pandera's failure cases dataframe.
 
     This class defines the basic structure and properties of failure case parsers.
     """
 
-    _valid: str
-    _invalid: str
-    _none: str
-
-    def __init__(self, status: Optional[QualityStatusOptions] = None):
-        status = status or QUALITY_STATUS_OPTIONS
-
-        self._valid = status["valid"]
-        self._invalid = status["invalid"]
-        self._none = status["none"]
+    valid_status: str
+    invalid_status: str
+    none_status: str
 
     # pylint: disable=missing-function-docstring
     @abc.abstractmethod
@@ -45,6 +38,31 @@ class FailureCaseParser(Protocol):
     # pylint: enable=missing-function-docstring
 
 
+class FailureCaseParser(FailureCaseParserProtocol):
+    """
+    An base class for pandera's failure cases dataframe.
+    """
+
+    def __init__(self, status: Optional[QualityStatusOptions] = None):
+        status = status or QUALITY_STATUS_OPTIONS
+
+        self.valid_status = status["valid"]
+        self.invalid_status = status["invalid"]
+        self.none_status = status["none"]
+
+    def parse_failure_cases(self, df: pd.DataFrame, number_of_rows: int) -> tuple[pd.Series, pd.Series]:
+        return NotImplemented
+
+    def create_quality_issues_series(self, df: pd.DataFrame) -> pd.Series:
+        return NotImplemented
+
+    def create_quality_status_series(self, series_issues: pd.Series) -> pd.Series:
+        return NotImplemented
+
+    def create_failure_case(self, column: str, check: str) -> str:
+        return NotImplemented
+
+
 class DefaultFailureCaseParser(FailureCaseParser):
     """
     A default implementation of the FailureCaseParser abstract class.
@@ -55,14 +73,14 @@ class DefaultFailureCaseParser(FailureCaseParser):
             If not provided, the default quality status options are used.
 
     Attributes:
-        _valid (str): The valid quality status.
-        _invalid (str): The invalid quality status.
+        valid_status (str): The valid quality status.
+        invalid_status (str): The invalid quality status.
         _none (str): The none quality status.
     """
 
-    # pylint: disable=W0246
-    def __init__(self, status: Optional[QualityStatusOptions] = None):
-        super().__init__(status)
+    valid_status: str
+    invalid_status: str
+    none_status: str
 
     def parse_failure_cases(self, df: pd.DataFrame, number_of_rows: int):
         """
@@ -135,7 +153,7 @@ class DefaultFailureCaseParser(FailureCaseParser):
         Returns:
             pd.Series: A series filled with the "none" quality status.
         """
-        return series.reindex(range(number_of_rows), fill_value=self._none)
+        return series.reindex(range(number_of_rows), fill_value=self.none_status)
 
     def create_quality_status_series(self, series_issues: pd.Series) -> pd.Series:
         """
@@ -147,4 +165,4 @@ class DefaultFailureCaseParser(FailureCaseParser):
         Returns:
             pd.Series: A series containing quality status based on the issues.
         """
-        return pd.Series(np.where(series_issues == self._none, self._valid, self._invalid))
+        return pd.Series(np.where(series_issues == self.none_status, self.valid_status, self.invalid_status))
