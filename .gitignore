@@ -127,3 +127,6 @@ docs/source/CONTRIBUTING.md
 
 # ignore coverage report
 coverage/
+
+# ignore custom scripts
+scripts/
