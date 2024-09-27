@@ -98,8 +98,7 @@ def test_validator_validate(
     df = cast(pd.DataFrame, request.getfixturevalue(df_fixture))
     org_columns = df.columns.to_list()
     validator = DataFrameValidator(quality_report, lazy, columns, parser)
-    print(validator._parser)
-    print(validator._parser.__dict__)
+
     with exception:
         df = validator.validate(schema, df)
 
