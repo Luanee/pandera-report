@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pandera-report"
-version = "0.1.1"
+version = "0.1.2"
 description = "Pandera Report for row-based reporting by using the power of pandera."
 authors = ["Pit Nahrstedt <pit.nahrstedt@outlook.de>"]
 license = "MIT"
