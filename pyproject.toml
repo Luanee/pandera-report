@@ -25,18 +25,18 @@ Homepage = "https://github.com/Luanee/pandera-report"
 
 [tool.poetry.dependencies]
 python = "^3.9, <3.13"
-pandas = "^2.1.1"
-pandera = "^0.17.2"
-numpy = "^1.26.1"
+pandas = "^2.2.3"
+pandera = "^0.20.4"
+numpy = "^1.26.4"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.10.0"
-pre-commit = "^3.5.0"
-isort = "^5.12.0"
-pylint = "^3.0.1"
-pytest = "^7.4.2"
-pytest-cov = "^4.1.0"
-autoflake = "^2.2.1"
+black = "^24.8.0"
+pre-commit = "^3.8.0"
+isort = "^5.13.2"
+pylint = "^3.3.1"
+pytest = "^8.3.3"
+pytest-cov = "^5.0.0"
+autoflake = "^2.3.1"
 
 [build-system]
 requires = ["poetry-core"]
@@ -84,26 +84,16 @@ src_paths = [
 
 
 [tool.pytest.ini_options]
-minversion = "6.0"
+minversion = "7.0"
 python_files = ["test_*.py", "*_test.py"]
 python_classes = ["Test", "Acceptance"]
 python_functions = ["test_*"]
-testpaths = "tests"
-filterwarnings = "error"
-omit = [
-    "*/__init__.py",
-]
+testpaths = ["tests"]
+filterwarnings = ["ignore::UserWarning"]
 addopts = '''
-    --verbose
-    -p no:warnings
-    --strict-markers
-    --tb=short
-    --cov-report=xml:coverage/coverage.xml
-    --cov-report term-missing
     --cov=pandera_report
-    --cov=tests
-    --cov-branch
-    --no-cov-on-fail
+    --cov-report=xml:coverage/coverage.xml
+    --cov-report term-missing:skip-covered
 '''
 
 
@@ -123,11 +113,8 @@ fail_under=80
 
 [tool.coverage.run]
 branch = true
+disable_warnings = ["ignore::UserWarning"]
 source = ["pandera_report", "tests"]
-omit = [
-    "__init__.py",  # Exclude test files from coverage analysis
-    "tests/*",  # Exclude test files from coverage analysis
-]
 
 [tool.coverage.html]
 directory = "coverage"

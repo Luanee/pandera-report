@@ -13,7 +13,7 @@ from pandera.errors import SchemaError, SchemaErrors
 from pandera.typing import Series
 
 from pandera_report.options import QUALITY_COLUMNS_OPTIONS, QualityColumnsOptions
-from pandera_report.parser import FailureCaseParser
+from pandera_report.parser import FailureCaseParserProtocol
 from pandera_report.validator import DataFrameValidator
 
 schema = pa.DataFrameSchema(
@@ -51,7 +51,10 @@ class EmptySchemaModel(pa.DataFrameModel):
     column3: Series[str] = pa.Field(nullable=True)
 
 
-custom_columns: QualityColumnsOptions = {"issues": "what's that?", "status": "does it work?"}
+custom_columns: QualityColumnsOptions = {
+    "issues": "what's that?",
+    "status": "does it work?",
+}
 
 
 @pytest.mark.parametrize(
@@ -63,8 +66,24 @@ custom_columns: QualityColumnsOptions = {"issues": "what's that?", "status": "do
         ("df_valid", schema, True, True, None, None, do_not_raise()),
         ("df_valid", schema, True, True, custom_columns, None, do_not_raise()),
         ("df_valid", SchemaModel, True, True, custom_columns, None, do_not_raise()),
-        ("df_invalid_values", schema, False, False, None, None, pytest.raises(SchemaError)),
-        ("df_invalid_values", schema, False, True, None, None, pytest.raises(SchemaErrors)),
+        (
+            "df_invalid_values",
+            schema,
+            False,
+            False,
+            None,
+            None,
+            pytest.raises(SchemaError),
+        ),
+        (
+            "df_invalid_values",
+            schema,
+            False,
+            True,
+            None,
+            None,
+            pytest.raises(SchemaErrors),
+        ),
         ("df_invalid_values", schema, True, False, None, None, do_not_raise()),
         ("df_invalid_values", schema, True, True, None, None, do_not_raise()),
         ("df_empty", schema, True, True, None, None, do_not_raise()),
@@ -78,7 +97,7 @@ def test_validator_validate(
     quality_report: bool,
     lazy: bool,
     columns: Optional[QualityColumnsOptions],
-    parser: Optional[FailureCaseParser],
+    parser: Optional[FailureCaseParserProtocol],
     exception,
     request,
 ):

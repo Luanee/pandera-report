@@ -4,7 +4,6 @@ from typing import (
     Optional,
     overload,
     Type,
-    TypedDict,
     Union,
 )
 
@@ -13,7 +12,7 @@ import pandera as pa
 from pandera.errors import SchemaError, SchemaErrors
 
 from pandera_report.options import QUALITY_COLUMNS_OPTIONS, QualityColumnsOptions
-from pandera_report.parser import DefaultFailureCaseParser, FailureCaseParser
+from pandera_report.parser import DefaultFailureCaseParser, FailureCaseParserProtocol
 
 
 class DataFrameValidator:
@@ -33,7 +32,7 @@ class DataFrameValidator:
         quality_report: bool = True,
         lazy: bool = True,
         columns: Optional[QualityColumnsOptions] = None,
-        parser: Optional[FailureCaseParser] = None,
+        parser: Optional[FailureCaseParserProtocol] = None,
     ):
         self.quality_report = quality_report
         self.lazy = lazy
@@ -46,7 +45,7 @@ class DataFrameValidator:
         self._is_valid = None
 
     @property
-    def columns(self) -> TypedDict:
+    def columns(self) -> QualityColumnsOptions:
         """
         Get the names of quality columns.
 
